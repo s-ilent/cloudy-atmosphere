@@ -64,4 +64,4 @@ Material:
     - rayleigh_scattering: {r: 0.0058023394, g: 0.013557763, b: 0.033100005, a: 0}
     - solar_irradiance: {r: 1.5, g: 1.5, b: 1.5, a: 0}
     - sun_size: {r: 0.004675034, g: 0.9999891, b: 0, a: 0}
-    - white_point: {r: 1.1803877, g: 0.92905307, b: 0.89055914, a: 0}
+    - white_point: {r: 1, g: 1, b: 1, a: 0}

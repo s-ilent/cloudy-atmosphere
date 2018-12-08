@@ -69,12 +69,13 @@
 	}
 	SubShader
 	{
-		// No culling or depth
-		Cull Off ZWrite Off ZTest Always
+		Tags { "Queue"="Background" "RenderType"="Background" "PreviewType"="Skybox" "IsEmissive" = "true" }
 
-		Tags{ "RenderType" = "Background"  "Queue" = "Background" "IgnoreProjector" = "True" "ForceNoShadowCasting" = "True" "IsEmissive" = "true"   }
+    	Cull Off ZWrite Off
+		
 		Pass
 		{
+
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
