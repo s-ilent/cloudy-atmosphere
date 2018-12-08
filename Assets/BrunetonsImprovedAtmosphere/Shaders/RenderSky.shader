@@ -30,11 +30,10 @@
 	*/
 	Properties
 	{
-		[HideInInspector] use_custom_height("use_custom_height", Int) = 0
-		[HideInInspector] use_custom_scale("use_custom_scale", Int) = 0
-		[HideInInspector] custom_height("custom_height", Float) = -1
-		[HideInInspector] custom_scale("custom_scale", Float) = 1
-
+		units_to_atmosphere_top ("Units to Atmosphere Boundary", Int) = 60
+		lateral_scale_x ("Lateral Scale X", Int) = 1
+		lateral_scale_z ("Lateral Scale Z", Int) = 1
+		
 		[HideInInspector] transmittance_texture ("Transmittance", 2D) = "white" {}
 		[HideInInspector] irradiance_texture ("Irradiance", 2D) = "white" {}
 		[HideInInspector] scattering_texture ("Scattering", 3D) = "white" {}
@@ -90,6 +89,10 @@
 			#include "ScatteringFunctions.cginc"
 			#include "IrradianceFunctions.cginc"
 			#include "RenderingFunctions.cginc"
+
+			float units_to_atmosphere_top;
+			float lateral_scale_x;
+			float lateral_scale_z;
 
 			float exposure;
 			float3 white_point;
@@ -162,7 +165,14 @@
 
 				float shadow_length = 0;
 				float3 transmittance;
-				float3 radiance = GetSkyRadiance(camera - earth_center, view_direction, shadow_length, sun_direction, transmittance);
+
+				float3 pos;
+
+				pos.x = lateral_scale_x * (camera.x - earth_center.x);
+				pos.y = (top_radius - bottom_radius) / units_to_atmosphere_top * camera.y + bottom_radius;
+				pos.z = lateral_scale_z * (camera.z - earth_center.z);
+
+				float3 radiance = GetSkyRadiance(pos, view_direction, shadow_length, sun_direction, transmittance);
 
 				// If the view ray intersects the Sun, add the Sun radiance.
 				if (dot(view_direction, sun_direction) > sun_size.y) 

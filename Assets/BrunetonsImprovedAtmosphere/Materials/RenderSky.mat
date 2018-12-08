@@ -18,10 +18,6 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - irradiance_texture:
         m_Texture: {fileID: 2800000, guid: 3da09b2dc5d21402e8ff9db88cf89ab2, type: 2}
         m_Scale: {x: 1, y: 1}
@@ -51,15 +47,14 @@ Material:
     - TRANSMITTANCE_TEXTURE_HEIGH: 0
     - TRANSMITTANCE_TEXTURE_WIDTH: 256
     - bottom_radius: 6360
-    - custom_height: -1
-    - custom_scale: 1
     - exposure: 0.0001
+    - lateral_scale_x: 1
+    - lateral_scale_z: 1
     - mie_phase_function_g: 0.8
     - mu_s_min: -0.20791174
     - sun_angular_radius: 0.004675
     - top_radius: 6420
-    - use_custom_height: 0
-    - use_custom_scale: 0
+    - units_to_atmosphere_top: 60
     m_Colors:
     - SKY_SPECTRAL_RADIANCE_TO_LUMINANCE: {r: 683, g: 683, b: 683, a: 0}
     - SUN_SPECTRAL_RADIANCE_TO_LUMINANCE: {r: 87936.92, g: 69212.91, b: 66345.17,
