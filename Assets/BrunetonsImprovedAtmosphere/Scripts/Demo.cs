@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 namespace BrunetonsImprovedAtmosphere
 {
@@ -32,6 +33,14 @@ namespace BrunetonsImprovedAtmosphere
         public Material m_material;
 
         private Model m_model;
+
+        public bool precomputeOnStart = false;
+
+        void Start() {
+        	if (precomputeOnStart) {
+        		HardUpdate();
+        	}
+        }
 
         /// <summary>
         /// The "real" initialization work, which is specific to our atmosphere model,

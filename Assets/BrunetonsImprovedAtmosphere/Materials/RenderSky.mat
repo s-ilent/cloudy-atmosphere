@@ -8,7 +8,7 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: RenderSky
   m_Shader: {fileID: 4800000, guid: 775202e8874ffc0439621133e0bc3bf5, type: 3}
-  m_ShaderKeywords: CLAMP_HORIZON_ON COMBINED_SCATTERING_TEXTURES
+  m_ShaderKeywords: COMBINED_SCATTERING_TEXTURES
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -47,15 +47,15 @@ Material:
     - TRANSMITTANCE_TEXTURE_HEIGH: 0
     - TRANSMITTANCE_TEXTURE_WIDTH: 256
     - bottom_radius: 6360
-    - clamp_horizon: 1
+    - clamp_horizon: 0
     - exposure: 0.0001
-    - lateral_scale_x: 0
-    - lateral_scale_z: 0
+    - lateral_scale_x: 1
+    - lateral_scale_z: 1
     - mie_phase_function_g: 0.8
     - mu_s_min: -0.20791174
     - sun_angular_radius: 0.004675
     - top_radius: 6420
-    - units_to_atmosphere_top: 1000
+    - units_to_atmosphere_top: 100
     m_Colors:
     - SKY_SPECTRAL_RADIANCE_TO_LUMINANCE: {r: 683, g: 683, b: 683, a: 0}
     - SUN_SPECTRAL_RADIANCE_TO_LUMINANCE: {r: 87936.92, g: 69212.91, b: 66345.17,
@@ -65,4 +65,4 @@ Material:
     - rayleigh_scattering: {r: 0.0058023394, g: 0.013557763, b: 0.033100005, a: 0}
     - solar_irradiance: {r: 1.5, g: 1.5, b: 1.5, a: 0}
     - sun_size: {r: 0.004675034, g: 0.9999891, b: 0, a: 0}
-    - white_point: {r: 1, g: 1, b: 1, a: 0}
+    - white_point: {r: 1.1803877, g: 0.92905307, b: 0.89055914, a: 0}
