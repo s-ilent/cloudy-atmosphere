@@ -1,6 +1,6 @@
 # Bruneton's Atmospheric Scattering for Unity
 
-This is an extension of github user [scrawk](https://github.com/scrawk)'s implementation of Eric Bruneton's [atmospheric scattering](https://github.com/ebruneton/precomputed_atmospheric_scattering) for Unity.
+This is an extension of github user [scrawk](https://github.com/Scrawk/Brunetons-Improved-Atmospheric-Scattering)'s implementation of Eric Bruneton's [atmospheric scattering](https://github.com/ebruneton/precomputed_atmospheric_scattering) for Unity.
 
 The original implementation had many hard-coded aspects, and did not work in the editor or play nicely with Unity's skybox system.
 
