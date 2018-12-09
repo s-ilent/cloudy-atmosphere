@@ -37,8 +37,6 @@ public class DemoEditor : Editor {
 		else {
 			EditorGUILayout.HelpBox("system not supported", MessageType.Error);
 		}
-
-		GUIUtility.ExitGUI();
 	}
 	
 }  // class DemoEditor

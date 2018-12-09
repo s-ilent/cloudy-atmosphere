@@ -33,6 +33,8 @@
 		units_to_atmosphere_top ("Units to Atmosphere Boundary", Int) = 60
 		lateral_scale_x ("Lateral Scale X", Int) = 1
 		lateral_scale_z ("Lateral Scale Z", Int) = 1
+
+		[MaterialToggle] clamp_horizon ("Clamp Horizon View", Int) = 0 
 		
 		[HideInInspector] transmittance_texture ("Transmittance", 2D) = "white" {}
 		[HideInInspector] irradiance_texture ("Irradiance", 2D) = "white" {}
@@ -94,6 +96,7 @@
 			float units_to_atmosphere_top;
 			float lateral_scale_x;
 			float lateral_scale_z;
+			int clamp_horizon;
 
 			float exposure;
 			float3 white_point;
@@ -164,6 +167,10 @@
 				float3 view_direction = normalize(i.view_ray);
 				float3 sun_direction = _WorldSpaceLightPos0.xyz;
 
+				if (clamp_horizon == 1) {
+					view_direction.y = saturate(view_direction.y);
+				}
+
 				float shadow_length = 0;
 				float3 transmittance;
 
@@ -182,6 +189,8 @@
 				}
 
 				radiance = pow(float3(1,1,1) - exp(-radiance / white_point * exposure), 1.0 / 2.2);
+
+				radiance = saturate(radiance);
 
 				return float4(radiance, 1);
 			}
