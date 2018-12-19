@@ -1,68 +1,76 @@
-# Bruneton's Atmospheric Scattering for Unity
+# Bruneton's Improved Atmospheric Scattering for Unity
 
-This is an extension of github user [scrawk](github.com/scrawk)'s implementation of Eric Bruneton's [atmospheric scattering](https://github.com/ebruneton/precomputed_atmospheric_scattering) for Unity.
+This is an extension of scrawk's [implementation](https://github.com/Scrawk/Brunetons-Improved-Atmospheric-Scattering) of ebruneton's [improved atmospheric scattering](https://github.com/ebruneton/precomputed_atmospheric_scattering) paper.
 
-The original implementation had many hard-coded aspects, and did not work in the editor or play nicely with Unity's skybox system.
+Scrawk's Unity port, while excellent, was restricted in many ways due to various hardcoded parameters. As he himself noted:
+
+> The demo uses a image effect shader as a example of how to use the scattering. The sphere rendered and its light shafts are hard coded into the shader as its just a example. Some work would be needed to convert this into a practical implementation
+
+This is my attempt at a practical implementation.
+
+## Goals
+- To modify the existing codebase as little as possible.
+- To enable previewing of the atmosphere in the editor.
+- To remove the hardcoded sphere, and image-effect rendering assumptions.
+- To enable better control over when / how the scattering textures get precomputed and saved.
 
 ## What I changed
+- Modified `Model.cs` to serialize the generated scattering RenderTexture objects as Texture2D/Texture3D assets.
+- Rewrote `RenderSky.shader` to integrate with the Unity skybox system, and removed the hardcoded elements.
+- Wrote a custom GUI for `Demo.cs` to allow better control over precomputation.
 
-- Wrote a GUI for `Demo.cs` component to allow more granularity over when the precomputation happens.
-- Modified `Model.cs` to serialize generated scattering RenderTexture' as Texture2D/3D assets, allowing for in-editor skybox previewing.
-- Rewrote `RenderSky.shader` to remove the hardcoded sphere, and integrate into Unity's skybox system.
+## How to setup
 
-## How to use
+### 1. Lighting Settings
 
-### Setting up the skybox
+##### Required
 
-- Open the Lighting settings window
-- Drag your "sun" directionalLight into the "Sun Source" slot.
-- Drag the RenderSky material from the assets browser into the "Skybox Material" slot.
+1. Select "Window > Lighting > Settings" from menu bar. A **Lighting** window will appear somewhere on your screen.
+2. Locate the **Enviroment** heading in the Lighting window.
+3. Populate the **Skybox Material** slot with the material located in the asset browser under "BrunetonsImprovedAtmosphere > Materials > RenderSky.mat".
+4. Populate the **Sun Source** slot with the main directional light in your scene (add one first, if you have not already).
 
-### Setting up the manager
+##### For best results
 
-- Create an empty gameObject in your scene heirarchy.
-- Add a "Demo" component to it.
-- Set the parameters for the precomputation to your liking.
-- Press the "Precompute" button.
+5. Change the **Source** dropdown under **Enviroment Lighting** to "Skybox".
+6. Change the **Source** dropdown under **Enviroment Reflections** to "Skybox"
+7. Verify that **Realtime Global Illumination** is checled "On".
+8. Verify that **Baked Global Illumination** is checked "Off".
 
-## Download .unityPackage
+### 2. Scene
 
-[Download the .unityPackage from my Google Drive](https://drive.google.com/file/d/1RW2GX8HSPGVgexnSG5S_qv5g8ndycFrs/view?usp=sharing).
+1. Create an empty game object in the scene hierarchy. Name it something descriptive, like "AtmosphereManager".
+2. Select your new game object to open its inspector window. Click the **Add Component** button and search for "Demo". Alternatively, you can drag the "Demo script" located at "BrunetonsImprovedAtmosphere > Scripts > Demo.cs" directly onto your game object.
+3. Populate the **Compute** slot of the Demo inspector with the shader located at "BrunetonsImprovedAtmosphere > Shaders > Precomputation.compute".
+4. Populate the **Material** slot of the Demo inspector with the material located at "BrunetonsImprovedAtmosphere > Materials > RenderSky.mat".
+5. Adjust the settings to your liking, and click the **Precompute** button.
 
-*(Note that this package requires a graphics card that supports compute shaders and 3D textures).*
+### 3. Material Properties
 
-![AtmosphericScatter0](https://static.wixstatic.com/media/1e04d5_d954a2a7602c4522b7d039c6e20dab31~mv2.jpg/v1/fill/w_550,h_550,al_c,q_80,usm_0.66_1.00_0.01/1e04d5_d954a2a7602c4522b7d039c6e20dab31~mv2.jpg)
+In addition to the precomputation properties in the `Demo` inspector, there are a few a more parameters to configure in the **RenderSky.mat** material itself.
 
-![AtmosphericScatter1](https://static.wixstatic.com/media/1e04d5_55f45d4bed6f46f88a7943ea21c1fedf~mv2.jpg/v1/fill/w_550,h_550,al_c,q_80,usm_0.66_1.00_0.01/1e04d5_55f45d4bed6f46f88a7943ea21c1fedf~mv2.jpg)
+Navigate to "BrunetonsImprovedAtmosphere > Materials > RenderSky.mat" to open the material's inspector. There are 4 parameters to change.
 
-![AtmosphericScatter2](https://static.wixstatic.com/media/1e04d5_41d46d0d10bb4615ab3c20fc78c41d78~mv2.jpg/v1/fill/w_550,h_550,al_c,q_80,usm_0.66_1.00_0.01/1e04d5_41d46d0d10bb4615ab3c20fc78c41d78~mv2.jpg)
+1. **Units to Atmosphere Boundary**: the distance (in unity units - i.e. meters) from (0,0,0) to the top of the atmosphere. The default value is "60", but a more accurate value would be "50000" (50km).
+2. **Lateral Scale X**: By default, the planet is centered laterally around the point (0,0). This parameter adjusts the offset. The default value is "1".
+3. **Lateral Scale Z**: By default, the planet is centered laterally around the point (0,0). This parameter adjusts the offset. The default value is "1".
+4. **Clamp Horizon View**: By default, the atmosphere renders the ground as well as the sky. You should leave this off unless you expeirience unwanted reflection and lighting artefacts.
 
-![AtmosphericScatter3](https://static.wixstatic.com/media/1e04d5_a55dd5ff3b8b4dceaf90d08d8c070016~mv2.jpg/v1/fill/w_550,h_550,al_c,q_80,usm_0.66_1.00_0.01/1e04d5_a55dd5ff3b8b4dceaf90d08d8c070016~mv2.jpg)
+## Requirements
 
-![AtmosphericScatter4](https://static.wixstatic.com/media/1e04d5_9929cc45239145fea0520febf8839284~mv2.jpg/v1/fill/w_550,h_550,al_c,q_80,usm_0.66_1.00_0.01/1e04d5_9929cc45239145fea0520febf8839284~mv2.jpg)
+This project requires a graphics card that supports the following Unity features:
+- Compute Shader
+- Texture3D
+- RenderTexture
 
-I am providing [scrawk](github.com/scrawk)'s original readme below, for reference.
+This project was tested on an AMD Ryzen 5/Nvidia GTX 1060 based workstation running Unity 2017.4.12f1.
 
-# Brunetons-Improved-Atmospheric-Scattering
+## Download
 
-This a port to Unity of a updated and improved version of [Brunetons atmospheric scatter](https://github.com/ebruneton/precomputed_atmospheric_scattering) published in 2017. The [original](https://www.digital-dust.com/single-post/2017/03/24/Brunetons-atmospheric-scattering-in-Unity) was published in  2008 so is a bit old now.
+Download the .unitypackage from my [Google Drive](https://drive.google.com/file/d/1RW2GX8HSPGVgexnSG5S_qv5g8ndycFrs/view?usp=sharing).
 
-The new version contains the follow improvements.
+## Results
 
-* More descriptive function and variable names and extensive comments.
-
-* Improved texture coordinate mapping which removes the horizon artifact in the previous version.
-
-* Provides a option to store the single Mie scatter in the alpha channel (Rayleigh is in the rgb) or in the rgb of a separate   texture.
-
-* Provides a example of how to combine with light shafts.
-
-* Converts the spectral radiance values to RGB luminance values as described in [A Qualitative and Quantitative Evaluation of 8 Clear Sky Models](https://arxiv.org/pdf/1612.04336.pdf) (section 14.3)
-
-* Or precomputes luminance values instead of spectral radiance values, as described in [Real-time Spectral Scattering in Large-scale Natural Participating Media](http://www.oskee.wz.cz/stranka/uploads/SCCG10ElekKmoch.pdf) (section 4.4). The precomputation phase is then slower than with the above option, but uses the same amount of GPU memory.
-
-* Adds support for the ozone layer, and for custom density profiles for air molecules and aerosols.
-
-The demo uses a image effect shader as a example of how to use the scattering. The sphere rendered and its light shafts are hard coded into the shader as its just a example. Some work would be needed to convert this into a practical implementation
-
-You can download a Unity package [here](https://app.box.com/s/ac6nkj41vqxo52kpv0m66pbpg4oe571a).
+![midday](https://i.imgur.com/ewiTBgX.png)
+![sunset](https://i.imgur.com/FI0mD97.png)
+![twilight](https://i.imgur.com/FRgBzV9.png)
