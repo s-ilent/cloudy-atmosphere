@@ -63,7 +63,7 @@ This project requires a graphics card that supports the following Unity features
 - Texture3D
 - RenderTexture
 
-This project was tested on an AMD Ryzen 5/Nvidia GTX 1060 based workstation running Unity 2017.4.12f1.
+This project was tested on an AMD Ryzen 5 / Nvidia GTX 1060 based workstation running Unity 2017.4.12f1.
 
 ## Download
 
