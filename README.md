@@ -19,6 +19,25 @@ This is my attempt at a practical implementation.
 - Rewrote `RenderSky.shader` to integrate with the Unity skybox system, and removed the hardcoded elements.
 - Wrote a custom GUI for `Demo.cs` to allow better control over precomputation.
 
+## Download
+
+Download the .unitypackage from my [Google Drive](https://drive.google.com/file/d/1RW2GX8HSPGVgexnSG5S_qv5g8ndycFrs/view?usp=sharing).
+
+## Requirements
+
+This project requires a graphics card that supports the following Unity features:
+- Compute Shader
+- Texture3D
+- RenderTexture
+
+This project was tested on an AMD Ryzen 5 / Nvidia GTX 1060 based workstation running Unity 2017.4.12f1.
+
+## Results
+
+![midday](https://i.imgur.com/ewiTBgX.png)
+![sunset](https://i.imgur.com/FI0mD97.png)
+![twilight](https://i.imgur.com/FRgBzV9.png)
+
 ## How to setup
 
 ### 1. Lighting Settings
@@ -55,22 +74,3 @@ Navigate to "BrunetonsImprovedAtmosphere > Materials > RenderSky.mat" to open th
 2. **Lateral Scale X**: By default, the planet is centered laterally around the point (0,0). This parameter adjusts the offset. The default value is "1".
 3. **Lateral Scale Z**: By default, the planet is centered laterally around the point (0,0). This parameter adjusts the offset. The default value is "1".
 4. **Clamp Horizon View**: By default, the atmosphere renders the ground as well as the sky. You should leave this off unless you expeirience unwanted reflection and lighting artefacts.
-
-## Requirements
-
-This project requires a graphics card that supports the following Unity features:
-- Compute Shader
-- Texture3D
-- RenderTexture
-
-This project was tested on an AMD Ryzen 5 / Nvidia GTX 1060 based workstation running Unity 2017.4.12f1.
-
-## Download
-
-Download the .unitypackage from my [Google Drive](https://drive.google.com/file/d/1RW2GX8HSPGVgexnSG5S_qv5g8ndycFrs/view?usp=sharing).
-
-## Results
-
-![midday](https://i.imgur.com/ewiTBgX.png)
-![sunset](https://i.imgur.com/FI0mD97.png)
-![twilight](https://i.imgur.com/FRgBzV9.png)
