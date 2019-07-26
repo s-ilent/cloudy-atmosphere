@@ -19,10 +19,6 @@ This is my attempt at a practical implementation.
 - Rewrote `RenderSky.shader` to integrate with the Unity skybox system, and removed the hardcoded elements.
 - Wrote a custom GUI for `Demo.cs` to allow better control over precomputation.
 
-## Download
-
-Download the .unitypackage from my [Google Drive](https://drive.google.com/file/d/1RW2GX8HSPGVgexnSG5S_qv5g8ndycFrs/view?usp=sharing).
-
 ## Requirements
 
 This project requires a graphics card that supports the following Unity features:
