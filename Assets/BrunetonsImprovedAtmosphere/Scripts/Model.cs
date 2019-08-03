@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEditor;
 
 namespace BrunetonsImprovedAtmosphere
 {
@@ -194,6 +193,7 @@ namespace BrunetonsImprovedAtmosphere
         /// </summary>
         public void BindToMaterial(Material mat)
         {
+
             if (UseLuminance == LUMINANCE.NONE)
                 mat.EnableKeyword("RADIANCE_API_ENABLED");
             else
@@ -204,29 +204,14 @@ namespace BrunetonsImprovedAtmosphere
             else
                 mat.DisableKeyword("COMBINED_SCATTERING_TEXTURES");
 
-            string path = "Assets/BrunetonsImprovedAtmosphere/Textures/";
-            
-            Texture2D t = TransmittanceTexture.ToTexture2D();
-            AssetDatabase.CreateAsset(t, path + "transmittance.Texture2D");
+            mat.SetTexture("transmittance_texture", TransmittanceTexture);
+            mat.SetTexture("scattering_texture", ScatteringTexture);
+            mat.SetTexture("irradiance_texture", IrradianceTexture);
 
-            Texture3D s = ScatteringTexture.ToTexture3D();
-            AssetDatabase.CreateAsset(s, path + "scattering.Texture3D");
-
-            Texture2D i = IrradianceTexture.ToTexture2D();
-            AssetDatabase.CreateAsset(i, path + "irradiance.Texture2D");
-
-            mat.SetTexture("transmittance_texture", t);
-            mat.SetTexture("scattering_texture", s);
-            mat.SetTexture("irradiance_texture", i);
-
-            if(CombineScatteringTextures) {
-                mat.SetTexture("single_mie_scattering_texture", TextureUtilities.blackTexture3D());
-            }
-            else {
-                Texture3D m = OptionalSingleMieScatteringTexture.ToTexture3D();
-                AssetDatabase.CreateAsset(m, path + "optional_mie.Texture3D");
-                mat.SetTexture("single_mie_scattering_texture", m);
-            }
+            if(CombineScatteringTextures)
+                mat.SetTexture("single_mie_scattering_texture", Texture2D.blackTexture);
+            else
+                mat.SetTexture("single_mie_scattering_texture", OptionalSingleMieScatteringTexture);
 
             mat.SetInt("TRANSMITTANCE_TEXTURE_WIDTH", CONSTANTS.TRANSMITTANCE_WIDTH);
             mat.SetInt("TRANSMITTANCE_TEXTURE_HEIGHT", CONSTANTS.TRANSMITTANCE_HEIGHT);
@@ -262,6 +247,17 @@ namespace BrunetonsImprovedAtmosphere
 
             Vector3 mieScattering = ToVector(Wavelengths, MieScattering, lambdas, LengthUnitInMeters);
             mat.SetVector("mie_scattering", mieScattering);
+        }
+
+        // Added by Dan Shervheim.
+        // danielshervheim.com
+        // August, 2019
+        public void GetTextures(out RenderTexture transmittance, out RenderTexture scattering, out RenderTexture singleMieScattering, out RenderTexture irradiance)
+        {
+            transmittance = TransmittanceTexture;
+            scattering = ScatteringTexture;
+            singleMieScattering = OptionalSingleMieScatteringTexture;
+            irradiance = IrradianceTexture;
         }
 
         public void Release()
