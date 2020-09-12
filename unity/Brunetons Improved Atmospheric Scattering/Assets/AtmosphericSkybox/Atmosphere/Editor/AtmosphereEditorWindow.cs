@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+using BrunetonsImprovedAtmosphere;
+
 public class AtmosphereEditorWindow : EditorWindow
 {
     // Simulation parameters.
@@ -15,19 +17,22 @@ public class AtmosphereEditorWindow : EditorWindow
     public bool UseCombinedTextures = false;
     public bool UseHalfPrecision = true;
     public bool DoWhiteBalance = true;
-    public BrunetonsImprovedAtmosphere.LUMINANCE UseLuminance = BrunetonsImprovedAtmosphere.LUMINANCE.PRECOMPUTED;
+    public LUMINANCE UseLuminance = LUMINANCE.PRECOMPUTED;
     public float Exposure = 10.0f;
-    public ComputeShader precomputation;
-    public Material material;
+
+    // Load from Resources.
+    private ComputeShader _precomputation;
+    private Material _material;
 
     // Private variables.
-    private BrunetonsImprovedAtmosphere.Model m_model;
+    private Model m_model;
 
     private Texture2D m_transmittanceTexture;
     private Texture3D m_scatteringTexture;
     private Texture3D m_singleMieScatteringTexture;
     private Texture2D m_irradianceTexture;
 
+    private string _materialPath;
     private string _transmittanceTexturePath;
     private string _scatteringTexturePath;
     private string _singleMieScatteringTexturePath;
@@ -64,23 +69,19 @@ public class AtmosphereEditorWindow : EditorWindow
             GUILayout.Label("Atmosphere Generator");
 
             GUILayout.Space(SPACE);
-            GUILayout.Label("Required References");
-            precomputation = (ComputeShader)EditorGUILayout.ObjectField(precomputation, typeof(ComputeShader), false);
-            material = (Material)EditorGUILayout.ObjectField(material, typeof(Material), false);
-
-            GUILayout.Space(SPACE);
             GUILayout.Label("Precomputation Parameters");
             UseConstantSolarSpectrum = GUILayout.Toggle(UseConstantSolarSpectrum, "Use constant solar spectrum");
             UseOzone = GUILayout.Toggle(UseOzone, "Use ozone");
             UseCombinedTextures = GUILayout.Toggle(UseCombinedTextures, "Use combined textures");
             UseHalfPrecision = GUILayout.Toggle(UseHalfPrecision, "Use half precision");
             DoWhiteBalance = GUILayout.Toggle(DoWhiteBalance, "Do white balance");
-            UseLuminance = (BrunetonsImprovedAtmosphere.LUMINANCE)EditorGUILayout.EnumPopup("Luminance", UseLuminance);
+            UseLuminance = (LUMINANCE)EditorGUILayout.EnumPopup("Luminance", UseLuminance);
             Exposure = EditorGUILayout.FloatField("Exposure", Exposure);
 
             GUILayout.Space(SPACE);
             if (GUILayout.Button("Precompute")) {
                 try {
+                    LoadResources();
                     SetTexturePaths();
                     Verify();
                     _showErrorMessage = false;
@@ -100,9 +101,23 @@ public class AtmosphereEditorWindow : EditorWindow
         }
     }
 
+    private void LoadResources()
+    {
+        _precomputation = Resources.Load("Precomputation") as ComputeShader;
+        if (_precomputation == null) {
+            throw new ArgumentException("Unable to load Precomputation.compute from Resources.");
+        }
+        Shader s = Resources.Load("Atmosphere") as Shader;
+        if (s == null) {
+            throw new ArgumentException("Unable to load Atmosphere.shader from Resources.");
+        }
+        _material = new Material(s);
+    }
+
     private void SetTexturePaths()
     {
         // Prompt the user to save the file.
+        _materialPath = EditorUtility.SaveFilePanelInProject("Save As", "AtmosphericSkybox", "mat", "");
         _transmittanceTexturePath = EditorUtility.SaveFilePanelInProject("Save As", "transmittance", "asset", "");
         _scatteringTexturePath = EditorUtility.SaveFilePanelInProject("Save As", "scattering", "asset", "");
         _singleMieScatteringTexturePath = EditorUtility.SaveFilePanelInProject("Save As", "singleMieScattering", "asset", "");
@@ -111,18 +126,21 @@ public class AtmosphereEditorWindow : EditorWindow
 
     private void Verify()
     {
-        if (precomputation == null) {
+        if (_precomputation == null) {
             throw new ArgumentException("The precomputation compute shader must be assigned.");
         }
 
-        if (material == null) {
+        if (_material == null) {
             throw new ArgumentException("The material must be assigned.");
         }
 
-        if (material.shader != Shader.Find("Skybox/Atmosphere")) {
+        if (_material.shader != Shader.Find("Skybox/Atmosphere")) {
             throw new ArgumentException("The material must use the shader: \"Skybox/Atmosphere\".");
         }
 
+        if (_materialPath == null || _materialPath.Equals("")) {
+            throw new ArgumentException("Invalid path provided for the material.");
+        }
         if (_transmittanceTexturePath == null || _transmittanceTexturePath.Equals("")) {
             throw new ArgumentException("Invalid path provided for the transmittance texture.");
         }
@@ -192,16 +210,16 @@ public class AtmosphereEditorWindow : EditorWindow
         double kGroundAlbedo = 0.1;
         double max_sun_zenith_angle = (UseHalfPrecision ? 102.0 : 120.0) / 180.0 * Mathf.PI;
 
-        BrunetonsImprovedAtmosphere.DensityProfileLayer rayleigh_layer = new BrunetonsImprovedAtmosphere.DensityProfileLayer("rayleigh", 0.0, 1.0, -1.0 / kRayleighScaleHeight, 0.0, 0.0);
-        BrunetonsImprovedAtmosphere.DensityProfileLayer mie_layer = new BrunetonsImprovedAtmosphere.DensityProfileLayer("mie", 0.0, 1.0, -1.0 / kMieScaleHeight, 0.0, 0.0);
+        DensityProfileLayer rayleigh_layer = new DensityProfileLayer("rayleigh", 0.0, 1.0, -1.0 / kRayleighScaleHeight, 0.0, 0.0);
+        DensityProfileLayer mie_layer = new DensityProfileLayer("mie", 0.0, 1.0, -1.0 / kMieScaleHeight, 0.0, 0.0);
 
         // Density profile increasing linearly from 0 to 1 between 10 and 25km, and
         // decreasing linearly from 1 to 0 between 25 and 40km. This is an approximate
         // profile from http://www.kln.ac.lk/science/Chemistry/Teaching_Resources/
         // Documents/Introduction%20to%20atmospheric%20chemistry.pdf (page 10).
-        List<BrunetonsImprovedAtmosphere.DensityProfileLayer> ozone_density = new List<BrunetonsImprovedAtmosphere.DensityProfileLayer>();
-        ozone_density.Add(new BrunetonsImprovedAtmosphere.DensityProfileLayer("absorption0", 25000.0, 0.0, 0.0, 1.0 / 15000.0, -2.0 / 3.0));
-        ozone_density.Add(new BrunetonsImprovedAtmosphere.DensityProfileLayer("absorption1", 0.0, 0.0, 0.0, -1.0 / 15000.0, 8.0 / 3.0));
+        List<DensityProfileLayer> ozone_density = new List<DensityProfileLayer>();
+        ozone_density.Add(new DensityProfileLayer("absorption0", 25000.0, 0.0, 0.0, 1.0 / 15000.0, -2.0 / 3.0));
+        ozone_density.Add(new DensityProfileLayer("absorption1", 0.0, 0.0, 0.0, -1.0 / 15000.0, 8.0 / 3.0));
 
         List<double> wavelengths = new List<double>();
         List<double> solar_irradiance = new List<double>();
@@ -230,7 +248,7 @@ public class AtmosphereEditorWindow : EditorWindow
             ground_albedo.Add(kGroundAlbedo);
         }
 
-        m_model = new BrunetonsImprovedAtmosphere.Model();
+        m_model = new Model();
 
         m_model.HalfPrecision = UseHalfPrecision;
         m_model.CombineScatteringTextures = UseCombinedTextures;
@@ -253,9 +271,9 @@ public class AtmosphereEditorWindow : EditorWindow
         m_model.LengthUnitInMeters = kLengthUnitInMeters;
 
         int numScatteringOrders = 4;
-        m_model.Init(precomputation, numScatteringOrders);
+        m_model.Init(_precomputation, numScatteringOrders);
 
-        m_model.BindToMaterial(material);
+        m_model.BindToMaterial(_material);
 
         // Get the textures from the model and save them to this instance.
         RenderTexture transmittance, scattering, singleMieScattering, irradiance;
@@ -271,6 +289,7 @@ public class AtmosphereEditorWindow : EditorWindow
 
     private void SaveTextures()
     {
+        AssetDatabase.CreateAsset(_material, _materialPath);
         AssetDatabase.CreateAsset(m_transmittanceTexture, _transmittanceTexturePath);
         AssetDatabase.CreateAsset(m_scatteringTexture, _scatteringTexturePath);
         AssetDatabase.CreateAsset(m_singleMieScatteringTexture, _singleMieScatteringTexturePath);
@@ -281,14 +300,14 @@ public class AtmosphereEditorWindow : EditorWindow
 
     private void UpdateMaterial()
     {
-        material.SetFloat("exposure", UseLuminance != BrunetonsImprovedAtmosphere.LUMINANCE.NONE ? Exposure * 1e-5f : Exposure);
-        material.SetVector("earth_center", new Vector3(0.0f, -kBottomRadius / kLengthUnitInMeters, 0.0f));
-        material.SetVector("sun_size", new Vector2(Mathf.Tan(kSunAngularRadius), Mathf.Cos(kSunAngularRadius)));
+        _material.SetFloat("exposure", UseLuminance != LUMINANCE.NONE ? Exposure * 1e-5f : Exposure);
+        _material.SetVector("earth_center", new Vector3(0.0f, -kBottomRadius / kLengthUnitInMeters, 0.0f));
+        _material.SetVector("sun_size", new Vector2(Mathf.Tan(kSunAngularRadius), Mathf.Cos(kSunAngularRadius)));
 
-        material.SetTexture("transmittance_texture", m_transmittanceTexture);
-        material.SetTexture("scattering_texture", m_scatteringTexture);
-        material.SetTexture("single_mie_scattering_texture", m_singleMieScatteringTexture);
-        material.SetTexture("irradiance_texture", m_irradianceTexture);
+        _material.SetTexture("transmittance_texture", m_transmittanceTexture);
+        _material.SetTexture("scattering_texture", m_scatteringTexture);
+        _material.SetTexture("single_mie_scattering_texture", m_singleMieScatteringTexture);
+        _material.SetTexture("irradiance_texture", m_irradianceTexture);
 
         double white_point_r = 1.0;
         double white_point_g = 1.0;
@@ -307,7 +326,7 @@ public class AtmosphereEditorWindow : EditorWindow
             white_point_b /= white_point;
         }
 
-        material.SetVector("white_point", new Vector3((float)white_point_r, (float)white_point_g, (float)white_point_b));
+        _material.SetVector("white_point", new Vector3((float)white_point_r, (float)white_point_g, (float)white_point_b));
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();

@@ -58,7 +58,7 @@ void ComputeDirectIrradiance(uint3 id : SV_DispatchThreadID)
 
     if(blend[1] == 1)
 		irradianceWrite[id.xy] += irradianceRead[id.xy];
-	
+
 }
 
 #pragma kernel ComputeSingleScattering
@@ -184,6 +184,3 @@ void ClearTex3D(uint3 id : SV_DispatchThreadID)
 {
     targetWrite3D[id] = float4(0,0,0,0);
 }
-
-
-
