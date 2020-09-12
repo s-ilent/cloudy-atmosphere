@@ -1,7 +1,7 @@
 {
     "name": "com.danielshervheim.atmosphericskybox",
     "displayName": "Atmospheric Skybox",
-    "version": "0.1",
+    "version": "1.0.0",
     "unity": "2018.3",
     "description": "A physically-based atmospheric skybox based on Eric Bruneton's work."
 }
