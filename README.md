@@ -33,6 +33,17 @@ This project was tested on Windows 10 and macOS Catalina, on Unity 2018.4.26 LTS
 ![sunset](https://i.imgur.com/FI0mD97.png)
 ![twilight](https://i.imgur.com/FRgBzV9.png)
 
+## How to install
+
+### Method 1: copy into your project
+
+1. Download this repo.
+2. Copy the `AtmosphericSkybox` folder into your projects `Assets` folder.
+
+### Method 2: add as a package dependency
+
+1. Coming soon.
+
 ## How to setup
 
 #### Generating the atmosphere
