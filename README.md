@@ -42,7 +42,11 @@ This project was tested on Windows 10 and macOS Catalina, on Unity 2018.4.26 LTS
 
 ### Method 2: add as a package dependency
 
-1. Coming soon.
+1. Add the following line to the dependencies in `Packages/manifest.json`:
+
+```json
+"com.danielshervheim.atmosphericskybox": "https://github.com/danielshervheim/Brunetons-Improved-Atmospheric-Scattering.git#upm"
+```
 
 ## How to setup
 
