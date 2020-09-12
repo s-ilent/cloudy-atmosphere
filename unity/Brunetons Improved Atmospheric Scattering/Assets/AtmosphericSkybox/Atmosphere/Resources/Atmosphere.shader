@@ -7,8 +7,8 @@ Shader "Skybox/Atmosphere"
     Properties
     {
 		units_to_atmosphere_boundary ("Units to Atmosphere Boundary", float) = 6000
-        [Toggle]
-        tonemap("Tonemap", Int) = 1
+        [Toggle] tonemap("Tonemap", Int) = 1
+        [Toggle] gammaCorrection("Gamma Correction", Int) = 0
 
 		// Textures.
 		[HideInInspector] transmittance_texture("Transmittance", 2D) = "white" {}
@@ -77,6 +77,7 @@ Shader "Skybox/Atmosphere"
 			#include "../../BrunetonsImprovedAtmosphere/Resources/RenderingFunctions.cginc"
 
             uint tonemap;
+            uint gammaCorrection;
 			float units_to_atmosphere_boundary;
 
 			// Textures.
@@ -169,8 +170,11 @@ Shader "Skybox/Atmosphere"
                 radiance = (radiance/white_point)*exposure;
 
                 if (tonemap == 1) {
-                    radiance = pow(1 - exp(-radiance), 1.0/2.2);
-                    radiance = saturate(radiance);
+                    radiance = 1-exp(-radiance);
+                }
+
+                if (gammaCorrection == 1) {
+                    radiance = pow(radiance, 1.0/2.2);
                 }
 
 				return float4(radiance, 1);
