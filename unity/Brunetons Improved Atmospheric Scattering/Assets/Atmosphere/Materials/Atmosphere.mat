@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Atmosphere
+  m_Shader: {fileID: 4800000, guid: 3f1178a9a6fb4b54e89fce3854f69ab0, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - irradiance_texture:
+        m_Texture: {fileID: 2800000, guid: d49d200a67b5648c19162df30f64996e, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - scattering_texture:
+        m_Texture: {fileID: 11700000, guid: 574621107cef242cdb8ffa4e6af07e74, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - single_mie_scattering_texture:
+        m_Texture: {fileID: 11700000, guid: 81f9580b557284c2dbdd575394e0cd64, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - transmittance_texture:
+        m_Texture: {fileID: 2800000, guid: 88f627d187be948798e095c144b5da90, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - IRRADIANCE_TEXTURE_HEIGHT: 16
+    - IRRADIANCE_TEXTURE_WIDTH: 64
+    - SCATTERING_TEXTURE_DEPTH: 32
+    - SCATTERING_TEXTURE_HEIGHT: 128
+    - SCATTERING_TEXTURE_MU_SIZE: 128
+    - SCATTERING_TEXTURE_MU_S_SIZE: 32
+    - SCATTERING_TEXTURE_NU_SIZE: 8
+    - SCATTERING_TEXTURE_R_SIZE: 32
+    - SCATTERING_TEXTURE_WIDTH: 256
+    - TRANSMITTANCE_TEXTURE_HEIGHT: 64
+    - TRANSMITTANCE_TEXTURE_WIDTH: 256
+    - bottom_radius: 6360
+    - exposure: 0.0001
+    - mie_phase_function_g: 0.8
+    - mu_s_min: -0.20791174
+    - sun_angular_radius: 0.004675
+    - tonemap: 0
+    - top_radius: 6420
+    - units_to_atmosphere_boundary: 5000
+    m_Colors:
+    - SKY_SPECTRAL_RADIANCE_TO_LUMINANCE: {r: 683, g: 683, b: 683, a: 0}
+    - SUN_SPECTRAL_RADIANCE_TO_LUMINANCE: {r: 87936.92, g: 69212.91, b: 66345.17,
+        a: 0}
+    - earth_center: {r: 0, g: -6360, b: 0, a: 0}
+    - mie_scattering: {r: 0.003996, g: 0.003996, b: 0.003996, a: 0}
+    - rayleigh_scattering: {r: 0.0058023394, g: 0.013557763, b: 0.033100005, a: 0}
+    - solar_irradiance: {r: 1.5, g: 1.5, b: 1.5, a: 0}
+    - sun_size: {r: 0.004675034, g: 0.9999891, b: 0, a: 0}
+    - white_point: {r: 1.1803877, g: 0.92905307, b: 0.89055914, a: 0}
