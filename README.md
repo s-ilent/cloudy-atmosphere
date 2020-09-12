@@ -59,3 +59,8 @@ This project was tested on Windows 10 and macOS Catalina, on Unity 2018.4.26 LTS
 2. Locate the "Environment" heading in the lighting window.
 3. Drag generated material into the *Skybox Material* slot.
 4. Drag your scene's main directional light into the "Sun Source" slot.
+
+## A note on color space
+
+- For best results, ensure that your projects color space is set to **linear**, rather than gamma.
+- If you are using the tonemap post-processing effect, then be sure to disable the **tonemap** checkbox on the material.
