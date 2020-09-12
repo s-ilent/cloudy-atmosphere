@@ -15,9 +15,8 @@ This is my attempt at a practical implementation.
 - To enable better control over when / how the scattering textures get precomputed and saved.
 
 ## What I changed
-- Added a `GetTextures()` method to `Model.cs`.
-- Added an `Atmosphere.cs` ScriptableObject to automatically generate the required material and textures.
-- Added an `Atmosphere.shader` skybox shader to use the generated textures.
+- Added `AtmosphereEditorWindow.cs`, an editor window to easily generate the required textures.
+- Added `Atmosphere.shader`, a skybox shader to use the generated textures.
 
 ## Requirements
 
@@ -26,7 +25,7 @@ This project requires a graphics card that supports the following Unity features
 - Texture3D
 - RenderTexture
 
-This project was tested on an AMD Ryzen 5 / Nvidia GTX 1060 based workstation running Unity 2017.4.12f1.
+This project was tested on an AMD Ryzen 5 / Nvidia GTX 1060 based workstation running Unity 2018.4.26f1 LTS.
 
 ## Results
 
@@ -38,14 +37,15 @@ This project was tested on an AMD Ryzen 5 / Nvidia GTX 1060 based workstation ru
 
 #### Generating the atmosphere
 
-1. Right-click in your asset browser and select "New > Atmosphere".
-2. Select the newly created Atmosphere asset.
-3. Click on the "Precomputation" slot, and drag in the `Precomputation.compute` file.
-4. Press Compute.
+1. Select "Atmosphere/Generate" from the menu bar.
+2. Drag `BrunetonsImprovedAtmosphere/Shaders/Precomputation.compute` into the *precomputation* slot.
+3. Drag `Atmosphere/Materials/Atmosphere.material` into the *material* slot.
+4. Set the precomputation parameters as desired.
+5. Press "Precompute".
 
 #### Using it as a skybox
 
 1. Select "Window > Lighting > Settings" from the menu bar.
 2. Locate the "Environment" heading in the lighting window.
-3. Click the arrow on the Atmosphere asset, and drag the "skyboxMaterial" sub-asset into the "Skybox Material" slot under the environment heading.
+3. Drag `Atmosphere/Materials/Atmosphere.material` into the *Skybox Material* slot.
 4. Drag your scene's main directional light into the "Sun Source" slot.
