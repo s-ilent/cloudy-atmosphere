@@ -2,6 +2,8 @@
 // danielshervheim.com
 // August 2019
 
+#if UNITY_EDITOR
+
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -415,3 +417,5 @@ public class AtmosphereEditorWindow : EditorWindow
     }
     */
 }  // Atmosphere
+
+#endif
