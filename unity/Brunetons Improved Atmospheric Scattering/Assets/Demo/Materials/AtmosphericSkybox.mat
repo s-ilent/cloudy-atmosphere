@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: AtmosphericSkybox
   m_Shader: {fileID: 4800000, guid: 3f1178a9a6fb4b54e89fce3854f69ab0, type: 3}
-  m_ShaderKeywords: TONEMAP_ON
+  m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -48,12 +48,13 @@ Material:
     - TRANSMITTANCE_TEXTURE_HEIGHT: 64
     - TRANSMITTANCE_TEXTURE_WIDTH: 256
     - bottom_radius: 6360
+    - clampViewVector: 0
     - exposure: 0.0001
     - gammaCorrection: 0
     - mie_phase_function_g: 0.8
     - mu_s_min: -0.20791174
     - sun_angular_radius: 0.004675
-    - tonemap: 1
+    - tonemap: 0
     - top_radius: 6420
     - units_to_atmosphere_boundary: 6000
     m_Colors:

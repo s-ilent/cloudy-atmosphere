@@ -9,6 +9,7 @@ Shader "Skybox/Atmosphere"
 		units_to_atmosphere_boundary ("Units to Atmosphere Boundary", float) = 6000
         [Toggle] tonemap("Tonemap", Int) = 1
         [Toggle] gammaCorrection("Gamma Correction", Int) = 0
+        [Toggle] clampViewVector("Clamp View At Horizon", Int) = 0
 
 		// Textures.
 		[HideInInspector] transmittance_texture("Transmittance", 2D) = "white" {}
@@ -76,9 +77,10 @@ Shader "Skybox/Atmosphere"
 			#include "../../BrunetonsImprovedAtmosphere/Resources/IrradianceFunctions.cginc"
 			#include "../../BrunetonsImprovedAtmosphere/Resources/RenderingFunctions.cginc"
 
+            float units_to_atmosphere_boundary;
             uint tonemap;
             uint gammaCorrection;
-			float units_to_atmosphere_boundary;
+            uint clampViewVector;
 
 			// Textures.
 			sampler2D transmittance_texture;
@@ -149,6 +151,10 @@ Shader "Skybox/Atmosphere"
 			{
 				float3 view_position = _WorldSpaceCameraPos;
 				float3 view_direction = normalize(i.view_ray);
+                if (clampViewVector == 1)
+                {
+                    view_direction.y = saturate(view_direction.y);
+                }
 				float3 sun_direction = _WorldSpaceLightPos0.xyz;
 
 				float shadow_length = 0;
