@@ -25,14 +25,6 @@ This project requires a graphics card that supports the following Unity features
 - Texture3D
 - RenderTexture
 
-This project was tested on Windows 10 and macOS Catalina, on Unity 2018.4.26 LTS.
-
-## Results
-
-![midday](https://i.imgur.com/ewiTBgX.png)
-![sunset](https://i.imgur.com/FI0mD97.png)
-![twilight](https://i.imgur.com/FRgBzV9.png)
-
 ## How to install
 
 ### Method 1: copy into your project
@@ -42,11 +34,13 @@ This project was tested on Windows 10 and macOS Catalina, on Unity 2018.4.26 LTS
 
 ### Method 2: add as a package dependency
 
-1. Add the following line to the dependencies in `Packages/manifest.json`:
+1. (pre-Unity 2019) Add the following line to the dependencies in `Packages/manifest.json`:
 
 ```json
-"com.danielshervheim.atmosphericskybox": "https://github.com/danielshervheim/Brunetons-Improved-Atmospheric-Scattering.git#upm"
+"com.dss.atmosphere": "https://github.com/danielshervheim/Brunetons-Improved-Atmospheric-Scattering.git#upm"
 ```
+
+2. (Unity 2019+) Or, just paste the url (with `#upm` at the end) in the "add package from git" option in the package manager.
 
 ## How to setup
 
@@ -68,3 +62,10 @@ This project was tested on Windows 10 and macOS Catalina, on Unity 2018.4.26 LTS
 
 - For best results, ensure that your projects color space is set to **linear**, rather than gamma.
 - If you are using the tonemap post-processing effect, then be sure to disable the **tonemap** checkbox on the material.
+
+
+## Results
+
+![midday](https://i.imgur.com/ewiTBgX.png)
+![sunset](https://i.imgur.com/FI0mD97.png)
+![twilight](https://i.imgur.com/FRgBzV9.png)
