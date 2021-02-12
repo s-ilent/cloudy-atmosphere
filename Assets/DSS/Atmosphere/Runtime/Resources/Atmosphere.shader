@@ -70,12 +70,12 @@ Shader "Skybox/Atmosphere"
 			#pragma multi_compile __ COMBINED_SCATTERING_TEXTURES
 
 			#include "UnityCG.cginc"
-			#include "../../BrunetonsImprovedAtmosphere/Resources/Definitions.cginc"
-			#include "../../BrunetonsImprovedAtmosphere/Resources/UtilityFunctions.cginc"
-			#include "../../BrunetonsImprovedAtmosphere/Resources/TransmittanceFunctions.cginc"
-			#include "../../BrunetonsImprovedAtmosphere/Resources/ScatteringFunctions.cginc"
-			#include "../../BrunetonsImprovedAtmosphere/Resources/IrradianceFunctions.cginc"
-			#include "../../BrunetonsImprovedAtmosphere/Resources/RenderingFunctions.cginc"
+			#include "Definitions.cginc"
+			#include "UtilityFunctions.cginc"
+			#include "TransmittanceFunctions.cginc"
+			#include "ScatteringFunctions.cginc"
+			#include "IrradianceFunctions.cginc"
+			#include "RenderingFunctions.cginc"
 
             float units_to_atmosphere_boundary;
             uint tonemap;

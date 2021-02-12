@@ -1,8 +1,12 @@
 {
-    "name": "danielshervheim.AtmosphericSkybox",
-    "references": [],
+    "name": "DSS.Atmosphere.Editor",
+    "references": [
+        "DSS.Atmosphere.Runtime"
+    ],
     "optionalUnityReferences": [],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
