@@ -1,0 +1,31 @@
+{
+    "author": {
+      "name" : "Daniel Shervheim",
+      "email" : "danielshervheim@gmail.com",
+      "url" : "https://www.danielshervheim.com/"
+    },
+    "contributors": [
+        {
+            "name":  "Scrawk",
+            "url": "https://github.com/Scrawk/Brunetons-Improved-Atmospheric-Scattering"
+        },
+        {
+            "name": "Eric Bruneton",
+            "url": "https://github.com/ebruneton/precomputed_atmospheric_scattering"
+        }
+    ],
+    "description": "A physically-based atmospheric skybox. Based on work by Eric Bruneton and Scrawk.",
+    "displayName": "Atmosphere",
+    "keywords": [
+      "unity",
+      "atmosphere",
+      "skybox",
+      "physicailly-based sky"
+    ],
+    "license": "BSD-3-Clause",
+    "name": "com.dss.atmosphere",
+    "repository": "github:danielshervheim/Brunetons-Improved-Atmospheric-Scattering",
+    "unity": "2018.3",
+    "version": "1.0.0",
+    "hideInEditor": false
+  }
