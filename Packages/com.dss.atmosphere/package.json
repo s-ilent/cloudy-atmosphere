@@ -26,6 +26,6 @@
     "name": "com.dss.atmosphere",
     "repository": "github:danielshervheim/Brunetons-Improved-Atmospheric-Scattering",
     "unity": "2018.3",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "hideInEditor": false
   }

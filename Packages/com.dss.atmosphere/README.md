@@ -13,7 +13,7 @@ This tool requires a graphics card that supports the following Unity features:
 
 ### 1. Generating the atmosphere
 
-1. Select "Atmosphere/Generate" from the menu bar.
+1. Select "DSS/Atmosphere/Generate" from the menu bar.
 2. Set the precomputation parameters as desired.
 3. Press "Precompute".
 4. Choose paths to save the generated material and textures.

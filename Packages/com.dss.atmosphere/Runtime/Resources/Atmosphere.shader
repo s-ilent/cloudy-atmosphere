@@ -2,7 +2,7 @@
 // danielshervheim.com
 // August 2019
 
-Shader "Skybox/Atmosphere"
+Shader "DSS/AtmosphericSkybox"
 {
     Properties
     {
