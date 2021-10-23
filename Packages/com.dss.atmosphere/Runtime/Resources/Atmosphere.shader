@@ -11,6 +11,8 @@ Shader "DSS/AtmosphericSkybox"
         [Toggle] gammaCorrection("Gamma Correction", Int) = 0
         [Toggle] clampViewVector("Clamp View At Horizon", Int) = 0
 
+		colorMultiplier ("Color Multiplier", Color) = (1,1,1,1)
+
 		// Textures.
 		[HideInInspector] transmittance_texture("Transmittance", 2D) = "white" {}
 		[HideInInspector] scattering_texture("Scattering", 3D) = "white" {}
@@ -93,6 +95,8 @@ Shader "DSS/AtmosphericSkybox"
 			float3 white_point;
 			float3 earth_center;
 			float2 sun_size;
+
+			float3 colorMultiplier;
 
 			// Advanced parameters and texture properties are in Definitions.cginc.
 
@@ -182,6 +186,8 @@ Shader "DSS/AtmosphericSkybox"
                 if (gammaCorrection == 1) {
                     radiance = pow(radiance, 1.0/2.2);
                 }
+
+				radiance *= colorMultiplier.rgb;
 
 				return float4(radiance, 1);
 			}

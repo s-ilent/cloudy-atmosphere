@@ -21,7 +21,7 @@ To the `scopedRegistries` section:
 To the `dependencies` section:
 
 ```
-"com.dss.atmosphere": "1.0.0"
+"com.dss.atmosphere": "1.0.2"
 ```
 
 After changes, the manifest file should look like below:
@@ -36,7 +36,7 @@ After changes, the manifest file should look like below:
     }
   ],
   "dependencies": {
-    "com.dss.atmosphere": "1.0.0",
+    "com.dss.atmosphere": "1.0.2",
     ...
 ```
 
