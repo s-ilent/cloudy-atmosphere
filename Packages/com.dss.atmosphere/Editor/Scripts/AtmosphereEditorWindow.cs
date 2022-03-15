@@ -47,7 +47,7 @@ namespace DSS.Atmosphere
         private const float kBottomRadius = 6360000.0f;
         private const float kLengthUnitInMeters = 1000.0f;
 
-        [MenuItem("DSS/Atmosphere/Generate")]
+        [MenuItem("Tools/DSS/Atmosphere/Generate")]
         static void Window()
         {
             AtmosphereEditorWindow window = (AtmosphereEditorWindow)EditorWindow.GetWindow(typeof(AtmosphereEditorWindow), true, "Generate Atmosphere");
