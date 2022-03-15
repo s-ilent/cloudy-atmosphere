@@ -77,16 +77,15 @@ namespace DSS.Atmosphere
             // will force a re-import when the target platform changes in case it would have impacted anything this importer depends on.
             var buildTarget = ctx.selectedBuildTarget;
 #endif
-            {
+            if (SystemInfo.supportsComputeShaders) {
             	// The original script creates the texture files here - this shouldn't be necessary
             	// because we can add them to the asset.
             	LoadResources();
             	Verify();
                 Precompute();
                 SaveTextures(ctx);
-                UpdateMaterial();
-
             }
+            UpdateMaterial();
         }
 
         private void LoadResources()
@@ -327,4 +326,20 @@ namespace DSS.Atmosphere
             ProjectWindowUtil.CreateAssetWithContent(directoryPath, kAtmosphereAssetContent);
         }
     }
+
+    [CanEditMultipleObjects]
+	[CustomEditor(typeof(AtmosphereImporter))]
+	public class AtmosphereImporterEditor: ScriptedImporterEditor
+	{
+	    public override void OnInspectorGUI()
+	    {
+            // Verify that compute shaders are supported.
+            if (!SystemInfo.supportsComputeShaders) {
+                EditorGUILayout.HelpBox("This tool requires a GPU that supports compute shaders. Simulation parameters can not be updated.", MessageType.Error);
+            }
+
+	        base.OnInspectorGUI();
+	        // base.ApplyRevertGUI();
+	    }
+	}
 }
