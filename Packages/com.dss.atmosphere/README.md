@@ -13,10 +13,8 @@ This tool requires a graphics card that supports the following Unity features:
 
 ### 1. Generating the atmosphere
 
-1. Select "DSS/Atmosphere/Generate" from the menu bar.
-2. Set the precomputation parameters as desired.
-3. Press "Precompute".
-4. Choose paths to save the generated material and textures.
+1. Right-click in your Unity project's assets browser in a suitable location and select "Create > Atmosphere Generator"
+2. Set the generation parameters as you'd like and click Apply. 
 
 ### 2. Using it as a skybox
 
@@ -29,9 +27,3 @@ This tool requires a graphics card that supports the following Unity features:
 
 - For best results, ensure that your projects color space is set to **linear**, rather than gamma.
 - If you are using the tonemap post-processing effect, then be sure to disable the **tonemap** checkbox on the material.
-
-## Results
-
-![midday](https://i.imgur.com/ewiTBgX.png)
-![sunset](https://i.imgur.com/FI0mD97.png)
-![twilight](https://i.imgur.com/FRgBzV9.png)

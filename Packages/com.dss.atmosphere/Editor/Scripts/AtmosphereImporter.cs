@@ -50,11 +50,13 @@ namespace DSS.Atmosphere
         private Texture3D m_scatteringTexture;
         private Texture3D m_singleMieScatteringTexture;
         private Texture2D m_irradianceTexture;
+        public Texture2D m_cloudNoiseTexture;
 
         private bool _showErrorMessage = false;
         private string _errorMessage = "";
 
         // Private constants.
+        private const string kShaderName = "Hidden/Silent/DSS/AtmosphericSkybox";
         private const float kSunAngularRadius = 0.00935f / 2.0f;
         private const float kBottomRadius = 6360000.0f;
         private const float kLengthUnitInMeters = 1000.0f;
@@ -111,8 +113,8 @@ namespace DSS.Atmosphere
                 throw new ArgumentException("The material must be assigned.");
             }
 
-            if (_material.shader != Shader.Find("DSS/AtmosphericSkybox")) {
-                throw new ArgumentException("The material must use the shader: \"DSS/AtmosphericSkybox\".");
+            if (_material.shader != Shader.Find(kShaderName)) {
+                throw new ArgumentException("The material must use the shader: " + kShaderName);
             }
         }
 
@@ -279,6 +281,7 @@ namespace DSS.Atmosphere
             _material.SetTexture("scattering_texture", m_scatteringTexture);
             _material.SetTexture("single_mie_scattering_texture", m_singleMieScatteringTexture);
             _material.SetTexture("irradiance_texture", m_irradianceTexture);
+            _material.SetTexture("_noiseMap", m_cloudNoiseTexture);
 
             double white_point_r = 1.0;
             double white_point_g = 1.0;

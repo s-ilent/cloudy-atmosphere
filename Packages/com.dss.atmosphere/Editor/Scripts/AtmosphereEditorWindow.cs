@@ -43,6 +43,7 @@ namespace DSS.Atmosphere
         private string _errorMessage = "";
 
         // Private constants.
+        private const string kShaderName = "Hidden/Silent/DSS/AtmosphericSkybox";        
         private const float kSunAngularRadius = 0.00935f / 2.0f;
         private const float kBottomRadius = 6360000.0f;
         private const float kLengthUnitInMeters = 1000.0f;
@@ -135,8 +136,8 @@ namespace DSS.Atmosphere
                 throw new ArgumentException("The material must be assigned.");
             }
 
-            if (_material.shader != Shader.Find("DSS/AtmosphericSkybox")) {
-                throw new ArgumentException("The material must use the shader: \"DSS/AtmosphericSkybox\".");
+            if (_material.shader != Shader.Find(kShaderName)) {
+                throw new ArgumentException("The material must use the shader: " + kShaderName);
             }
 
             if (_materialPath == null || _materialPath.Equals("")) {
