@@ -16,75 +16,62 @@ Shader "Hidden/Silent/DSS/AtmosphericSkybox"
 {
     Properties
     {
-		units_to_atmosphere_boundary ("Units to Atmosphere Boundary", float) = 6000
-        [Toggle] tonemap("Tonemap", Int) = 1
-        [Toggle] gammaCorrection("Gamma Correction", Int) = 0
+		_units_to_atmosphere_boundary ("Units to Atmosphere Boundary", float) = 6000
         [Enum(Off, 0, Clamp, 1, Mirror, 2)] clampViewVector("Clamp View At Horizon", Int) = 0
 
-		colorMultiplier ("Color Multiplier", Color) = (1,1,1,1)
+		_colorMultiplier ("Color Multiplier", Color) = (1,1,1,1)
 
-		
-		[Header(moon)]
+		[Header(Moon)]
 		_MoonColor("Moon Color", Color) = (0.2616284, 0.3708486, 0.6666667, 1.0)
 		_MoonPosition("Moon Position and Distance", Vector) = (0.5689898, 0.4594319, -0.682036, 1.0)
 
 		// Cloud parameters
-
-		[Header(towelcloud)]
-		_noiseMap("cloud noise map", 2D) = "white" {}
+		[Header(TowelCloud)]
+		_noiseMap("Cloud Noise Map", 2D) = "white" {}
 			_scale ("Cloud Size (Higher: less repetition)", Float) = 55
 			_cloudy ("Cloudiness", Range (0, 1)) = 0.5
 			_soft ("Cloud Softness", Range (0.0001, 0.9999)) = 0.4
-		//	_rotateY ("rotateY 空の前方の角度", Range (-180, 180)) = 0
-		//	_rotateZ ("rotateZ 光の上下角度", Range (-180, 180)) = 60
-		//[Header(cloud)]
-		//	_farMixRate ("farMixRate 水平線近くで空の色を雲に反映する割合", Range (0, 1)) = 0.6
-		//	_farMixLength ("farMixLength 水平線近くで空の色を雲に反映する距離", Range (0, 1)) = 0.3
-		//	_cloudFogColor("cloudFogColor 水平線近くで雲に反映する単色", Color) = (1, 1, 1, 0.1)
-		//	_cloudFogLength("cloudFogLength 単色のグラデーション幅", Range (0, 1)) = 0.3
-		[Header(horizon)]
-			[Toggle]_underFade ("underFade 下の方の雲を消す", Float) = 1
-			_underFadeStart ("underFadeStart 消し始める位置", Range (-1, 1)) = -0.5
-			_underFadeWidth ("underFadeWidth 消すときのグラデーション幅", Range (0.0001, 0.9999)) = 0.2
-			//[Toggle]_groundFill ("groundFill 下方向を塗りつぶす", Float) = 0
-			//_groundFillColor ("groundFillColor 下方向を塗りつぶす色", Color) = (0.13, 0.11, 0.1, 1)
-		[Header(move)]
-			_moveRotation ("moveRotation 雲の移動方向", Range (0, 360)) = 0
-			_speed_parameter ("speed 雲の速度", Float) = 1
-			_shapeSpeed_parameter ("shapeSpeed 雲の変形量", Float) = 1
-			_speedOffset ("speedOffset 雲の細かい部分の速度差", Float) = 0.2
-			_speedSlide ("speedSlide 雲の細かい部分の横方向への速度", Float) = 0.1
-		[Header(rim)]
-			_rimForce ("rimForce ふちの光の強さ", Float) = 0.5
-			_rimNarrow ("rimNarrow ふちの光の細さ", Float) = 2
-		[Header(scattering)]
-			[Toggle] _scattering ("scattering 拡散光を使う", Float) = 0
-			_scatteringColor ("scatteringColor 拡散光の色", Color) = (1, 1, 1, 1)
-			_scatteringForce ("scatteringForce 拡散光の強さ", Range (0, 3)) = 0.8
-			_scatteringRange ("scatteringRange 拡散光の影響を受ける範囲", Range (0, 1)) = 0.3
-			_scatteringNarrow ("scatteringNarrow 拡散光のふちの細さ", Float) = 1
-		[Header(faceWind)]
-			_faceWindScale_parameter ("faceWindScale 表面風の大きさ", Float) = 1
-			_faceWindForce_parameter ("faceWindForce 表面風の強さ", Float) = 1
-			_faceWindMove ("faceWindMove 表面風の移動速度", Float) = 1.3
-			_faceWindMoveSlide ("faceWindMoveSlide 表面風の細かい部分の移動速度", Float) = 1.8
-		[Header(farWind)]
-			_farWindDivision ("farWindDivision 遠方風の分割数", Int) = 35
-			_farWindForce_parameter ("farWindForce 遠方風の強さ", Float) = 1
-			_farWindMove ("farWindMove 遠方風の移動速度", Float) = 2
-			_farWindTopEnd ("farWindTopEnd 遠方風の上の消える位置", Float) = 0.5
-			_farWindTopStart ("farWindTopStart 遠方風の上の弱まり始める位置", Float) = 0.3
-			_farWindBottomStart ("farWindBottomStart 遠方風の下の弱まり始める位置", Float) = 0.1
-			_farWindBottomEnd ("farWindBottomEnd 遠方風の下の消える位置", Float) = -0.1
-		[Header(stream)]
-			[Toggle] _stream ("stream 気流", Float) = 1
-			_streamForce ("streamForce 気流の強さ", Float) = 5
-			_streamScale ("streamScale 気流の大きさ", Float) = 5
-			_streamMove ("streamMove 気流の移動速度", Float) = 1.5
-		[Header(etc)]
-			_fbmScaleUnder ("fbmScaleUnder 雲の細かい部分の変形値", Float) = 0.43
-			_boost ("boost 雲の光を強める値", Float) = 1.1
-			_chine ("chine 雲の尾根のやわらかさ", Float) = 0.5
+		[Header(Horizon)]
+		[Toggle]_underFade ("underFade: Fade out clouds at the bottom", Float) = 1
+		_underFadeStart ("underFadeStart: Start fading position", Range (-1, 1)) = -0.5
+		_underFadeWidth ("underFadeWidth: Fade gradient width", Range (0.0001, 0.9999)) = 0.2
+		[Header(Movement)]
+		_moveRotation ("moveRotation: Cloud movement direction", Range (0, 360)) = 0
+		_speed_parameter ("speed: Cloud speed", Float) = 1
+		_shapeSpeed_parameter ("shapeSpeed: Cloud deformation amount", Float) = 1
+		_speedOffset ("speedOffset: Speed difference in fine parts of clouds", Float) = 0.2
+		_speedSlide ("speedSlide: Lateral speed of fine parts of clouds", Float) = 0.1
+		[Header(Rimlight)]
+		_rimForce ("rimForce: Strength of edge light", Float) = 0.5
+		_rimNarrow ("rimNarrow: Narrowness of edge light", Float) = 2
+		[Header(Scattering)]
+		[Toggle] _scattering ("scattering: Use diffuse light", Float) = 0
+		_scatteringColor ("scatteringColor: Diffuse light color", Color) = (1, 1, 1, 1)
+		_scatteringForce ("scatteringForce: Diffuse light strength", Range (0, 3)) = 0.8
+		_scatteringRange ("scatteringRange: Range affected by diffuse light", Range (0, 1)) = 0.3
+		_scatteringNarrow ("scatteringNarrow: Narrowness of diffuse light edge", Float) = 1
+		[Header(Surface Wind)]
+		_faceWindScale_parameter ("faceWindScale: Surface wind size", Float) = 1
+		_faceWindForce_parameter ("faceWindForce: Surface wind strength", Float) = 1
+		_faceWindMove ("faceWindMove: Surface wind movement speed", Float) = 1.3
+		_faceWindMoveSlide ("faceWindMoveSlide: Movement speed of fine parts of surface wind", Float) = 1.8
+		[Header(Distant Wind)]
+		_farWindDivision ("farWindDivision: Number of divisions for distant wind", Int) = 35
+		_farWindForce_parameter ("farWindForce: Distant wind strength", Float) = 1
+		_farWindMove ("farWindMove: Distant wind movement speed", Float) = 2
+		_farWindTopEnd ("farWindTopEnd: Position where distant wind disappears at the top", Float) = 0.5
+		_farWindTopStart ("farWindTopStart: Position where distant wind starts to weaken at the top", Float) = 0.3
+		_farWindBottomStart ("farWindBottomStart: Position where distant wind starts to weaken at the bottom", Float) = 0.1
+		_farWindBottomEnd ("farWindBottomEnd: Position where distant wind disappears at the bottom", Float) = -0.1
+		[Header(Airflow)]
+		[Toggle] _stream ("stream: Airflow", Float) = 1
+		_streamForce ("streamForce: Airflow strength", Float) = 5
+		_streamScale ("streamScale: Airflow size", Float) = 5
+		_streamMove ("streamMove: Airflow movement speed", Float) = 1.5
+		[Header(Etc)]
+		_fbmScaleUnder ("fbmScaleUnder: Deformation value of fine parts of clouds", Float) = 0.43
+		_boost ("boost: Increase cloud light value", Float) = 1.1
+		_chine ("chine: Softness of cloud ridges", Float) = 0.5
 			//_alphaRate ("alphaRate 全体の透明度", Range (0, 1)) = 1
 
 		// Textures.
@@ -146,6 +133,9 @@ Shader "Hidden/Silent/DSS/AtmosphericSkybox"
 			#pragma multi_compile_local __ COMBINED_SCATTERING_TEXTURES
 			#pragma shader_feature_local __ _STREAM_ON
 
+			#define USE_STARS
+			#define USE_CLOUDS
+
 			#include "UnityCG.cginc"
 			#include "Definitions.cginc"
 			#include "UtilityFunctions.cginc"
@@ -156,9 +146,7 @@ Shader "Hidden/Silent/DSS/AtmosphericSkybox"
 			#include "CloudFunctions.cginc"
 			#include "NightSkyFunctions.cginc"
 
-            float units_to_atmosphere_boundary;
-            uint tonemap;
-            uint gammaCorrection;
+            float _units_to_atmosphere_boundary;
             uint clampViewVector;
 
 			// Textures.
@@ -173,7 +161,7 @@ Shader "Hidden/Silent/DSS/AtmosphericSkybox"
 			float3 earth_center;
 			float2 sun_size;
 
-			float3 colorMultiplier;
+			float3 _colorMultiplier;
 			float3 groundColor;
 
 			float4 _MoonColor;
@@ -278,6 +266,8 @@ Shader "Hidden/Silent/DSS/AtmosphericSkybox"
 			{
 				float3 view_position = _WorldSpaceCameraPos + earth_center;
 				float3 view_direction = normalize(i.view_ray);
+				float3 view_direction_stars = view_direction;
+
                 if (clampViewVector == 1)
                 {
                     view_direction.y = saturate(view_direction.y);
@@ -286,55 +276,60 @@ Shader "Hidden/Silent/DSS/AtmosphericSkybox"
 				{
 					view_direction.y *= -1;
 				}
-				float3 sun_direction = _WorldSpaceLightPos0.xyz;
 
+				float3 sun_direction = _WorldSpaceLightPos0.xyz;
 				float shadow_length = 0;
 				float3 radiance;
 				float3 transmittance;
+				float3 cloudRadiance;
+				float3 cloudTransmittance;
 
                 float3 p = view_position;
-                p /= units_to_atmosphere_boundary;
+                p /= _units_to_atmosphere_boundary;
                 p *= (top_radius - bottom_radius);
                 p.y += bottom_radius;
 
 				// It seems like calculating the clouds first would be the faster path to take.
 				// By calculating the clouds first, we can avoid needing to sample sky radiance
 				// twice. Still, sampling sky radiance shouldn't be expensive...
-
+#if defined(USE_CLOUDS)
 				CloudOutputData cloudData = GetCloudAtmosphere(p, -view_direction, sun_direction, transmittance,
 					transmittance_texture, scattering_texture);
 				float3 cloudWorldNormal = cloudData.cloudWorldNormal;
 				float cloudPower = cloudData.cloudPower;
 				float cloudAreaRate = cloudData.cloudAreaRate;
 					
-				// それぞれのdotから光影響を計算
+				// Calculate light and shadow effects from each dot
 				float3 invY = float3(1, -1, 1);
 				float3 skyVector = float3(1, 0, 0);
 				float3 cloudLightDirection = sun_direction; //invY*-reflect(sun_direction, skyVector);
 				float normalDot = dot(cloudWorldNormal, cloudLightDirection);
-				float normalDotForUv = normalDot * 0.5 + 0.5;
+				float normalDotForUv = saturate(normalDot * 0.5 + 0.5);
 				float viewDotToLightForUv = dot(view_direction, cloudLightDirection) * 0.5 + 0.5;
 				float viewDotToSkyForUv = dot(view_direction, skyVector) * 0.5 + 0.5;
+				float cloudOcclusion = 1-(normalDotForUv * cloudPower);
 				
 				// Get the cloud colour from the colour of the atmosphere when it's at
 				// maximum density.
 				float3 cloudViewDir = float3(view_direction.x, 0, view_direction.z);
 				float3 cloudP = float3(0, 
-					(top_radius - bottom_radius) / units_to_atmosphere_boundary
+					(top_radius - bottom_radius) / _units_to_atmosphere_boundary
 					 * view_position.y + bottom_radius, 
 					0);
-				float3 transmittance_cloud;
-				
-				float3 cloudColor = GetSkyRadiance(cloudP, cloudViewDir, 0, cloudLightDirection, 
-					transmittance_cloud);
-				float cloudOcclusion = 1-(normalDotForUv * cloudPower);
 
+				cloudRadiance = (cloudPower > 0.0) 
+					? GetSkyRadiance(cloudP, cloudViewDir, 0, cloudLightDirection, 
+					cloudTransmittance)
+					: 1.0;
 
 				radiance = (cloudPower < 1.0)
 					? GetSkyRadiance(p, view_direction, shadow_length, sun_direction, 
 					transmittance)
-					: cloudColor;
-
+					: cloudRadiance;
+#else
+				radiance = GetSkyRadiance(p, view_direction, shadow_length, sun_direction, 
+					transmittance);
+#endif
 				// If the view ray intersects the Sun, add the Sun radiance.
 				// Note that there are two ways of handling the sun colour.
 				// When baking reflection probes, the skybox is not told the colour of the sun
@@ -344,16 +339,24 @@ Shader "Hidden/Silent/DSS/AtmosphericSkybox"
 				// sky's sun. This isn't desirable for all scenarios though.
             	half lightColorIntensity = clamp(length(_LightColor0.xyz), 0.25, 1) ;
 				float sunAttenuation = smoothstep(sun_size.y, 1, dot(view_direction, sun_direction));
+				float3 sunRadiance = transmittance * GetSolarRadiance() * (_LightColor0.xyz / lightColorIntensity); //* 1e-4 
 				if (sunAttenuation > 0)
 				{
-					radiance += sunAttenuation * transmittance * GetSolarRadiance() //* 1e-4 
-						* (_LightColor0.xyz / lightColorIntensity);
+					radiance += sunAttenuation *  sunRadiance;
 				}
 
 				// Todo: Finish re-adding moon.
+				// Night radiance
+				// This is a total hack; it just looks nicer than pure black.
+				float3 nightRadiance = getNightHaze(view_position, view_direction_stars, sun_direction);
 
-				float3 sunColorClouds =  transmittance * (_LightColor0.xyz / lightColorIntensity);
+				float cloudDampening = saturate(dot(float3(0, 1, 0), sun_direction));
+
+#if defined(USE_CLOUDS)
+				float3 sunColorClouds = sunRadiance * 1e-5;
 				float3 nightCloudCol = 1e-6 * GetSolarRadiance() * _MoonColor;
+
+				cloudRadiance += normalDotForUv * sunColorClouds * cloudDampening;
 
 				// Add rim light and transmission to clouds
 				
@@ -363,11 +366,12 @@ Shader "Hidden/Silent/DSS/AtmosphericSkybox"
 					float rimPower = (1 - rimPowerR) * _rimForce;
 					rimPower = saturate(rimPower);
 					// 境界の光の色を設定
-					float2 rimUv = float2(viewDotToLightForUv, normalDotForUv);
+					//float2 rimUv = float2(viewDotToLightForUv, normalDotForUv);
 					//float3 rimColor =  transmittance;
-					//cloudColor.rgb =  rimColor.rgb * rimPower + cloudColor.rgb;
+					//cloudRadiance.rgb =  rimColor.rgb * rimPower + cloudRadiance.rgb;
 					float3 rimAddColor = (1-normalDotForUv) * transmittance 
 						* cloudPower * _rimForce * rimPower;
+					cloudRadiance += 1e-5 * rimAddColor * GetSolarRadiance();
 				// == 透過拡散光
 					float scatteringPower = 0;
 					if (_scattering)
@@ -385,33 +389,43 @@ Shader "Hidden/Silent/DSS/AtmosphericSkybox"
 						scatteringPower *= quadIn(scatteringPowerRateRaw);
 						scatteringPower = saturate(scatteringPower);
 						// 合成
-						cloudColor.rgb += scatteringPower * _scatteringColor 
+						cloudRadiance.rgb += scatteringPower * transmittance 
 							* _scatteringForce * sunColorClouds;
-						nightCloudCol.rgb += (scatteringPower * _scatteringColor
+						nightCloudCol.rgb += (scatteringPower * transmittance
 							* nightCloudCol);
 					}
-
+#endif
 				// Add stars.
 				// In real life, stars are always visible, but the atmosphere is too 
 				// bright for us to see them. However, dealing with realistic
 				// light ranges in Unity (let alone VRchat) is a huge pain. Instead,
 				// let's fake it. 
 				float atmosLuma = dot(radiance, 1.0/3.0);
-				float3 nightSky = getNightSky(view_position, view_direction);
+				float3 nightSky = getNightSky(view_position, view_direction_stars);
 
-				nightSky *= GetSolarRadiance() * 1e-5 * transmittance;
-				nightSky += transmittance;
+				nightSky *= GetSolarRadiance() * 1e-5;
+				nightSky += nightRadiance * 10;
+
+#if defined(USE_CLOUDS)
 				nightSky += nightCloudCol * (1-cloudOcclusion);
+				nightSky *= (1-cloudPower);
+#endif
 
-				radiance += (1-cloudPower) * nightSky / max(1, atmosLuma/2);
+#if defined(USE_STARS)
+				radiance += nightSky / max(1, atmosLuma/50);
+#endif
 
+
+#if defined(USE_CLOUDS)
 				// Finish applying cloud colour. 
-				radiance = lerp(radiance, cloudColor, saturate(cloudPower));
+				radiance = lerp(radiance, cloudRadiance, saturate(cloudPower));
+#endif
+				//radiance = lerp(radiance, ground_radiance, ground_alpha);
 				
                 radiance = (radiance/white_point)*exposure;
-				radiance += max(0, normalDotForUv * sunColorClouds) * saturate(cloudPower) + rimAddColor;
+				// radiance += max(0, normalDotForUv * sunColorClouds) * saturate(cloudPower) + rimAddColor;
 
-				radiance *= colorMultiplier.rgb;
+				radiance *= _colorMultiplier.rgb;
 
 				return float4(radiance, 1);
 			}

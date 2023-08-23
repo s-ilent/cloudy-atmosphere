@@ -88,6 +88,19 @@ float3 stars(float3 ro, float3 rd, float2 sp, float hh)
     return col;
 }
 
+float3 sky(float3 ro, float3 rd, float2 sp, float3 lp, out float cf)
+{
+    cf = 0;
+    float ld = max(dot(normalize(lp-ro), rd), 0.);
+    float y = -0.5+sp.x/PI;
+    y = max(abs(y)-0.02, 0.)+0.1*smoothstep(0.5, PI, abs(sp.y));
+    float3 blue = hsv2rgb(float3(0.6, 0.75, 0.35*exp(-15.*y)));
+    float ci = pow(ld, 10.)*2.*exp(-25.*y);
+    float3 yellow = blackbody(1500.)*ci;
+    cf = ci;
+    return blue+yellow;
+}
+
 float2 raySphere(float3 ro, float3 rd, float4 sph)
 {
     float3 oc = ro-sph.xyz;
@@ -126,6 +139,18 @@ float3 getNightSky(float3 ro, float3 rd)
 
 	return stars(ro, rd, sp, sf)*(1.-tanh_approx(2.*cf));
 }
+
+float3 getNightHaze(float3 ro, float3 rd, float3 lp_in)
+{
+    float2 sp = toSpherical(rd.xzy).yz;
+    float sf = 0.;
+    float cf = 0.;
+	//float3 lp = float3(1., -0.25, 0.) + 500.0;
+    float3 lp = lp_in + 500.0;
+
+	return sky(ro, rd, sp, lp, cf);
+}
+
 float4 getMoon(float3 ro, float3 rd)
 {
     float2 sp = toSpherical(rd.xzy).yz;
